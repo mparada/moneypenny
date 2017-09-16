@@ -42,8 +42,8 @@ class Transaction(db.Model):
             "date": self.date.strftime('%d.%m.%Y')}
 
 
-def get_name(data):
-    for context in data['result']['contexts']:
+def get_name(result):
+    for context in result['contexts']:
         if context['name'] == 'login':
             return context['parameters']['Name']
 
@@ -52,7 +52,7 @@ def get_name(data):
 def money_penny():
     result = request.get_json()['result']
     if result['action'] == 'get_balance':
-        name = get_name(data) if request.method == 'POST' else "Daniel"
+        name = get_name(result) if request.method == 'POST' else "Daniel"
         return get_balance(name)
     else:
         return get_transaction()
