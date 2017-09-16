@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -13,72 +14,89 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
     <!-- Custom script -->
     <script type='text/javascript' src='./scripts/notification.js'></script>
 
+    <script type="text/javascript" charset="utf-8">
+        $(function() {
+            var socket = io.connect('http://e12a2b11.ngrok.io/');
+            socket.on('connect', function() {
+                socket.emit('my event', {
+                    data: 'I\'m connected!'
+                });
+            });
+            socket.on('transaction', function(msg) {
+                add_transaction(msg);
+            });
+        });
+    </script>
+
     <!-- Custom styles for this template -->
     <link href="narrow-jumbotron.css" rel="stylesheet">
-  </head>
+</head>
 
-  <body>
+<body>
 
     <div class="container">
-      <div class="header clearfix">
-        <nav>
-          <ul class="nav nav-pills float-right">
-            <li class="nav-item">
-              <a class="nav-link active" href="javascript:void(null);">Notification <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="./overview.html">Overview</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="./transaction.html">Transaction</a>
-            </li>
-          </ul>
-        </nav>
-        <h3 class="text-muted">Money Penny</h3>
-      </div>
-
-
-      <div class="row marketing">
-        <div class="col-lg-12">
-          <h4>Notification</h4>
-          <p>Here you see the lifestream of the action from your money penny app.</p>
+        <div class="header clearfix">
+            <nav>
+                <ul class="nav nav-pills float-right">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="javascript:void(null);">Notification <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./overview.html">Overview</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./transaction.html">Transaction</a>
+                    </li>
+                </ul>
+            </nav>
+            <h3 class="text-muted">Money Penny</h3>
         </div>
-      </div>
 
-      <div id="notification-container">
-        <div class="card">
-          <div class="card-block">
-            <h4 class="card-title">Transaction</h4>
-            <p class="card-text">Send 20$ to Peter.</p>
-            <a href="javascript:void(null);" class="card-link transaction-ok">Ok</a>
-            <a href="javascript:void(null);" class="card-link">View transaction</a>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-block">
-            <h4 class="card-title">Transaction</h4>
-            <p class="card-text">Send 30$ to Peter.</p>
-            <a href="javascript:void(null);" class="card-link transaction-ok">Ok</a>
-            <a href="javascript:void(null);" class="card-link">View transaction</a>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-block">
-            <h4 class="card-title">Transaction</h4>
-            <p class="card-text">Send 40$ to Peter.</p>
-            <a href="javascript:void(null);" class="card-link transaction-ok">Ok</a>
-            <a href="javascript:void(null);" class="card-link">View transaction</a>
-          </div>
-        </div>
-      </div>
 
-      <footer class="footer">
-        <p>&copy; Money Penny 2017</p>
-      </footer>
+        <div class="row marketing">
+            <div class="col-lg-12">
+                <h4>Notification</h4>
+                <p>Here you see the lifestream of the action from your money penny app.</p>
+            </div>
+        </div>
 
-    </div> <!-- /container -->
-  </body>
+        <div id="notification-container">
+            <div class="card">
+                <div class="card-block">
+                    <h4 class="card-title">Transaction</h4>
+                    <p class="card-text">Send 20$ to Peter.</p>
+                    <a href="javascript:void(null);" class="card-link transaction-ok">Ok</a>
+                    <a href="javascript:void(null);" class="card-link">View transaction</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-block">
+                    <h4 class="card-title">Transaction</h4>
+                    <p class="card-text">Send 30$ to Peter.</p>
+                    <a href="javascript:void(null);" class="card-link transaction-ok">Ok</a>
+                    <a href="javascript:void(null);" class="card-link">View transaction</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-block">
+                    <h4 class="card-title">Transaction</h4>
+                    <p class="card-text">Send 40$ to Peter.</p>
+                    <a href="javascript:void(null);" class="card-link transaction-ok">Ok</a>
+                    <a href="javascript:void(null);" class="card-link">View transaction</a>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; Money Penny 2017</p>
+        </footer>
+
+    </div>
+    <!-- /container -->
+</body>
+
 </html>
