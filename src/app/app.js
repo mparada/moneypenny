@@ -21,7 +21,13 @@ const express = require('express');
 const app = express();
 
 const http = require('http').Server(app);
+http.listen(3000, function(){
+  console.log('listening on *:3000');
+});
 const io = require('socket.io')(http);
+io.on('connection', function(socket){
+  console.log('a user connected');
+});
 
 // Imports the Google Cloud client library
 const Datastore = require('@google-cloud/datastore');
@@ -33,13 +39,9 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', function(socket){
-  console.log('a user connected');
-});
 
-http.listen(3000, function(){
-  console.log('listening on *:3000');
-});
+
+
 
 app.get('/helloHttp', (req, res) => {
   const response = "This is a sample response from your webhook!" //Default response from the webhook to show it's working

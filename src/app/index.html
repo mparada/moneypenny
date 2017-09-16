@@ -54,9 +54,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script>
-        var socket = io();
         $(function() {
-            var socket = io('https://moneypenny-dabc6.appspot.com:3080');
+            var socket = io(); //.connect('http://localhost:3080');
             $('form').submit(function() {
                 socket.emit('chat message', $('#m').val());
                 $('#m').val('');
