@@ -32,8 +32,12 @@ class Transaction(db.Model):
 def transaction():
     if request.method == 'POST':
         data = request.get_json()
-        contexts = data['result']['contexts']
-        login = contexts.get('login')
+        login = None
+        for context in data['result']['contexts']:
+            if context['name'] == 'login':
+                login = context
+                break
+
         if not login:
             return jsonify({ "speech": "Invalid Session"})
 
