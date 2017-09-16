@@ -27,35 +27,38 @@
                 });
             });
             socket.on('name', function(msg) {
-                console.log(msg);
+                $("h1").html('Daniel Yu');
+                $("h2").css('visibility', 'visible');
+                $("figure").css('visibility', 'visible');
+                $(".container_16").css('visibility', 'visible');
             });
         });
     </script>
     <script>
         /*
-                $(document).ready(function() {
-                    console.log("ready!");
+                        $(document).ready(function() {
+                            console.log("ready!");
 
-                    (function poll() {
-                        setTimeout(function() {
-                            $.ajax({
-                                url: " http://localhost:5000/customer",
-                                type: "GET",
-                                success: function(data) {
-                                    if (data.name == 'Daniel') {
-                                        $("h1").html('Daniel Yu');
-                                        $("h2").css('visibility', 'visible');
-                                        $("figure").css('visibility', 'visible');
-                                        $(".container_16").css('visibility', 'visible');
-                                    }
-                                },
-                                dataType: "json",
-                                complete: poll,
-                                timeout: 2000
-                            })
-                        }, 5000);
-                    })();
-                });*/
+                            (function poll() {
+                                setTimeout(function() {
+                                    $.ajax({
+                                        url: " http://localhost:5000/customer",
+                                        type: "GET",
+                                        success: function(data) {
+                                            if (data.name == 'Daniel') {
+                                                $("h1").html('Daniel Yu');
+                                                $("h2").css('visibility', 'visible');
+                                                $("figure").css('visibility', 'visible');
+                                                $(".container_16").css('visibility', 'visible');
+                                            }
+                                        },
+                                        dataType: "json",
+                                        complete: poll,
+                                        timeout: 2000
+                                    })
+                                }, 5000);
+                            })();
+                        });*/
     </script>
 </head>
 

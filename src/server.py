@@ -58,6 +58,9 @@ def money_penny():
     if result['action'] == 'get_balance':
         name = get_name(result) if request.method == 'POST' else "Daniel"
         return get_balance(name)
+    elif result['action'] == 'mortgagecall.mortgagecall-yes':
+        name = get_name(result) if request.method == 'POST' else "Daniel"
+        return customer(name)
     else:
         return get_transaction()
 
@@ -119,16 +122,10 @@ def get_login(request):
 
 
 @app.route('/customer', methods=['GET', 'POST'])
-def customer():
-    if request.method == 'POST':
-        login = get_login(request)
-        customer_name = login['parameters']['Name']
-        socketio.emit('name', customer_name)
-        response = "Got Customer"
-        return jsonify({"speech": response, "displayText": response})
-    elif request.method == 'GET':
-        return jsonify({"name": customer_name})
-        #return app.send_static_file('Persona_Daniel.html')
+def customer(name="Daniel"):
+    socketio.emit('name', name)
+    response = "Got Customer"
+    return jsonify({"speech": response, "displayText": response})
 
 @socketio.on('my event')
 def handle_my_custom_event(json):
