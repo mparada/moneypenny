@@ -50,7 +50,7 @@ app.get('/helloHttp', (req, res) => {
   res.send(JSON.stringify({ "speech": response, "displayText": response}));
 });
 
-app.get('/transaction', (req, res) => {
+app.get('/send_money', (req, res) => {
   // Instantiates a client
   const datastore = Datastore({
     projectId: projectId
@@ -74,6 +74,7 @@ app.get('/transaction', (req, res) => {
       date: new Date().toJSON(),
       recipient: trans_params.recipient,
       // sender: login_params.Name,
+      sender: "Bob",
       reference: "Smart Voice Transaction",
     }
   };
