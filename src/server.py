@@ -3,14 +3,16 @@
 
 from flask import (Flask, request, jsonify)
 from flask_sqlalchemy import SQLAlchemy
-
+from flask_cors import CORS
 import datetime
 import os
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'
 db = SQLAlchemy(app)
 
+customer_name = "Nobody"
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -100,6 +102,29 @@ def get_transaction():
         response = "Okay, sending {} {} from {} to {}".format(amount, currency,
                                                               sender, recipient)
         return jsonify({"speech": response, "displayText": response})
+
+
+def get_login(request):
+    data = request.get_json()
+    login = None
+    for context in data['result']['contexts']:
+        if context['name'] == 'login':
+            login = context
+            break
+    return login
+
+
+@app.route('/customer', methods=['GET', 'POST'])
+def customer():
+    global customer_name
+    if request.method == 'POST':
+        login = get_login(request)
+        customer_name = login['parameters']['Name']
+        response = "Got Customer"
+        return jsonify({"speech": response, "displayText": response})
+    elif request.method == 'GET':
+        return jsonify({"name": customer_name})
+        #return app.send_static_file('Persona_Daniel.html')
 
 
 if __name__ == "__main__":
