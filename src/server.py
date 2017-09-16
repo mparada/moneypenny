@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from flask import (Flask, request, jsonify)
+from flask import (Flask, request, jsonify, send_from_directory)
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
@@ -48,6 +48,9 @@ def get_name(result):
         if context['name'] == 'login':
             return context['parameters']['Name']
 
+@app.route('/FE/<path:path>')
+def send_fe(path):
+    return send_from_directory('../FE', path)
 
 @app.route('/money_penny', methods=['GET', 'POST'])
 def money_penny():
