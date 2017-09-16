@@ -21,13 +21,13 @@ class Transaction(db.Model):
     currency = db.Column(db.String(10))
     date = db.Column(db.DateTime())
 
-    def __init__(self, sender, recipient, reference, amount, currency):
+    def __init__(self, sender, recipient, reference, amount, currency, date=None):
         self.sender = sender
         self.recipient = recipient
         self.reference = reference
         self.amount = amount
         self.currency = currency
-        self.date = datetime.datetime.now()
+        self.date = date if date else datetime.datetime.now()
 
     def as_dict(self):
         return {
@@ -38,6 +38,24 @@ class Transaction(db.Model):
             "amount": self.amount,
             "currency": self.currency,
             "date": self.date.strftime('%d.%m.%Y')}
+
+def get_name(data):
+    for context in data['result']['contexts']:
+        if context['name'] == 'login':
+            return context['parameters']['Name']
+
+@app.route('/balance', methods=['GET', 'POST'])
+def balance():
+    data = request.get_json()
+    balance = 0
+    name = get_name(data) if request.method == 'POST' else "Danel"
+    for t in Transaction.query.all():
+        if t.recipient == name:
+            balance += t.amount
+        elif t.sender == name:
+            balance -= t.amount
+    response = ("{}'s balance is {} Swiss Francs.".format(name, balance))
+    return jsonify({"speech": response, "displayText": response})
 
 
 @app.route('/transaction', methods=['GET', 'POST'])
@@ -74,10 +92,10 @@ def transaction():
         return jsonify({"speech": response, "displayText": response})
 
 
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
-
 if __name__ == "__main__":
     db.create_all()
+    for person in ["Daniel", "John", "Dina"]:
+        salary = Transaction("ETH Zurich", person, "Salary", 1000, "CHF")
+        db.session.add(salary)
+    db.session.commit()
     app.run(debug=True)
