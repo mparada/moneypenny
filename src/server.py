@@ -43,9 +43,10 @@ def transaction():
 
         amount = login['parameters']['money']['amount']
         currency = login['parameters']['money']['currency']
-        receipient = login['parameters']['receipient']
+        recipient = login['parameters']['recipient']
         sender = login['parameters']['Name']
-        response = "Sending {} {} from {} to {}".format(amount, currency, sender, receipient)
+        response = "Okay, sending {} {} from {} to {}".format(amount, currency,
+                sender, recipient)
         return jsonify({ "speech": response, "displayText": response})
 
 @app.route('/')
