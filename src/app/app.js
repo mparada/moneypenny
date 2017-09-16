@@ -22,6 +22,9 @@ const crypto = require('crypto');
 const app = express();
 app.enable('trust proxy');
 
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
 // Imports the Google Cloud client library
 const Datastore = require('@google-cloud/datastore');
 
@@ -29,13 +32,20 @@ const Datastore = require('@google-cloud/datastore');
 const projectId = 'moneypenny-dabc6';
 
 app.get('/', (req, res) => {
-  res.status(200).send('Hello, world!').end();
+  res.sendFile(__dirname + '/index.html');
 });
 
+io.on('connection', function(socket){
+  console.log('a user connected');
+});
+
+http.listen(3000, function(){
+  console.log('listening on *:3000');
+});
 
 app.get('/helloHttp', (req, res) => {
   const response = "This is a sample response from your webhook!" //Default response from the webhook to show it's working
-
+  io.emit('chat message', response);
   res.setHeader('Content-Type', 'application/json'); //Requires application/json MIME type
   res.send(JSON.stringify({ "speech": response, "displayText": response}));
 });
@@ -89,7 +99,7 @@ app.get('/transaction', (req, res) => {
 // Start the server
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
+  console.log('App listening on port ${PORT}');
   console.log('Press Ctrl+C to quit.');
 });
 // [END app]
