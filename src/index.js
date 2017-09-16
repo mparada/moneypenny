@@ -1,3 +1,4 @@
+var fs = require('fs');
 /*
 * HTTP Cloud Function.
 *
@@ -9,8 +10,12 @@ exports.helloHttp = function helloHttp (req, res) {
 
   res.setHeader('Content-Type', 'application/json'); //Requires application/json MIME type
   res.send(JSON.stringify({ "speech": response, "displayText": response
-  //"speech" is the spoken version of the response, "displayText" is the visual version
   }));
+  //"speech" is the spoken version of the response, "displayText" is the visual version
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.write(fs.readFileSync('https://storage.googleapis.com/moneypenny-dabc6.appspot.com/index.html'));
+  res.end();
+
 };
 
 
