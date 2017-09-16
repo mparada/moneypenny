@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script>
+    var source = new EventSource('https://us-central1-moneypenny-dabc6.cloudfunctions.net/helloHttp');
+    source.onmessage = function(e) {
+        document.body.innerHTML += e.data + '<br>kjkhjk';
+    };
+</script>
 
 <body>
 
     <div ng-app="">
 
         <p>Input something in the input box:</p>
-        <p>Name : <input type="text" ng-model="name" placeholder="Enter name here"></p>
+        <p>Name asdfasdf: <input type="text" ng-model="name" placeholder="Enter name here"></p>
         <h1>Hello {{name}}</h1>
 
     </div>
