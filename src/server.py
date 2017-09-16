@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from flask import (Flask, request)
+from flask import (Flask, request, jsonify)
 from flask_sqlalchemy import SQLAlchemy
 from OpenSSL import SSL
 
@@ -34,15 +34,17 @@ class Transaction(db.Model):
         self.currency = currency
         self.date = datetime.datetime()
 
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
-
 @app.route('/transaction', methods=['GET', 'POST'])
 def transaction():
     if request.method == 'POST':
         data = request.get_json()
         print(data)
+        response = "Got Data"
+        return jsonify({ "speech": response, "displayText": response})
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
 
 if __name__ == "__main__":
     context = (cer, key)
