@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
-    <!-- Custom script -->
-    <script type='text/javascript' src='./scripts/notification.js'></script>
+    <!-- Chart API -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
 
     <!-- Custom styles for this template -->
     <link href="narrow-jumbotron.css" rel="stylesheet">
@@ -27,10 +27,10 @@
         <nav>
           <ul class="nav nav-pills float-right">
             <li class="nav-item">
-              <a class="nav-link active" href="javascript:void(null);">Notification <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="./index.html">Notification <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="./overview.html">Overview</a>
+              <a class="nav-link active" href="javascript:void(null);">Overview</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="./transaction.html">Transaction</a>
@@ -43,42 +43,53 @@
 
       <div class="row marketing">
         <div class="col-lg-12">
-          <h4>Notification</h4>
-          <p>Here you see the lifestream of the action from your money penny app.</p>
+          <h4>Overview</h4>
+          <p>Here you see the overview of your monthly spending.</p>
         </div>
       </div>
 
-      <div id="notification-container">
-        <div class="card">
-          <div class="card-block">
-            <h4 class="card-title">Transaction</h4>
-            <p class="card-text">Send 20$ to Peter.</p>
-            <a href="javascript:void(null);" class="card-link transaction-ok">Ok</a>
-            <a href="javascript:void(null);" class="card-link">View transaction</a>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-block">
-            <h4 class="card-title">Transaction</h4>
-            <p class="card-text">Send 30$ to Peter.</p>
-            <a href="javascript:void(null);" class="card-link transaction-ok">Ok</a>
-            <a href="javascript:void(null);" class="card-link">View transaction</a>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-block">
-            <h4 class="card-title">Transaction</h4>
-            <p class="card-text">Send 40$ to Peter.</p>
-            <a href="javascript:void(null);" class="card-link transaction-ok">Ok</a>
-            <a href="javascript:void(null);" class="card-link">View transaction</a>
-          </div>
-        </div>
-      </div>
-
+      <div id="chart">
+   <canvas id="myChart" width="200" height="200"></canvas>
+ </div>
       <footer class="footer">
         <p>&copy; Money Penny 2017</p>
       </footer>
 
     </div> <!-- /container -->
+
+    <!-- Load the chart -->
+    <script>
+    var data = {
+    datasets: [{
+        data: [
+            11,
+            16,
+            7,
+            3,
+            14
+        ],
+        backgroundColor: [
+            "#FF6384",
+            "#4BC0C0",
+            "#FFCE56",
+            "#E7E9ED",
+            "#36A2EB"
+        ],
+        label: 'My dataset' // for legend
+    }],
+    labels: [
+        "Übrige Ausgaben",
+        "Wohnung und Energie",
+        "Restaurants und Hotels",
+        "Verkehr",
+        "Nahrungsmittel"
+    ]
+};
+var ctx = $("#myChart");
+new Chart(ctx, {
+    data: data,
+    type: 'polarArea'
+});
+    </script>
   </body>
 </html>
