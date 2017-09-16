@@ -3,8 +3,14 @@
 
 from flask import (Flask, request)
 from flask_sqlalchemy import SQLAlchemy
+from OpenSSL import SSL
 
 import datetime
+import os
+
+context = SSL.Context(SSL.SSLv23_METHOD)
+cer = os.path.join(os.path.dirname(__file__), 'moneypenny.crt')
+key = os.path.join(os.path.dirname(__file__), 'moneypenny.key')
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'
@@ -39,4 +45,5 @@ def transaction():
         print(data)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True)
+    context = (cer, key)
+    app.run(host='0.0.0.0', debug=True, ssl_context=context)
