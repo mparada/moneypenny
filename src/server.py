@@ -35,8 +35,21 @@ class Transaction(db.Model):
 def transaction():
     if request.method == 'POST':
         data = request.get_json()
-        print(data)
-        response = "Got Data"
+        login = None
+        for context in data['result']['contexts']:
+            if context['name'] == 'login':
+                login = context
+                break
+
+        if not login:
+            return jsonify({ "speech": "Invalid Session"})
+
+        amount = login['parameters']['money']['amount']
+        currency = login['parameters']['money']['currency']
+        recipient = login['parameters']['recipient']
+        sender = login['parameters']['Name']
+        response = "Okay, sending {} {} from {} to {}".format(amount, currency,
+                sender, recipient)
         return jsonify({ "speech": response, "displayText": response})
 
 @app.route('/')
