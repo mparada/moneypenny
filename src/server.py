@@ -12,7 +12,8 @@ CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'
 db = SQLAlchemy(app)
 
-customer = "Daniel"
+
+customer_name = "Daniel"
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -52,22 +53,34 @@ def transaction():
                 sender, recipient)
         return jsonify({ "speech": response, "displayText": response})
 
+
 @app.route('/')
 def hello_world():
     return 'Hello, World!'
 
+
+def get_login(request):
+    data = request.get_json()
+    login = None
+    for context in data['result']['contexts']:
+        if context['name'] == 'login':
+            login = context
+            break
+    return login
+
+
 @app.route('/customer', methods=['GET', 'POST'])
 def customer():
-    print(request)
+    global customer_name
     if request.method == 'POST':
-        data = request.get_json()
-        print(data)
-        customer = data['name']
+        login = get_login(request)
+        customer_name = login['parameters']['Name']
         response = "Got Customer"
         return jsonify({"speech": response, "displayText": response})
     elif request.method == 'GET':
-        result = jsonify({"name": customer})
-        return result
+        return jsonify({"name": customer_name})
+        #return app.send_static_file('Persona_Daniel.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
