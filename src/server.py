@@ -12,7 +12,7 @@ CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'
 db = SQLAlchemy(app)
 
-customer_name = "Daniel"
+customer_name = "Nobody"
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
