@@ -33,6 +33,7 @@ class Transaction(db.Model):
         self.amount = amount
         self.currency = currency
         self.date = datetime.datetime()
+        self.customer = None
 
 @app.route('/transaction', methods=['GET', 'POST'])
 def transaction():
@@ -45,6 +46,18 @@ def transaction():
 @app.route('/')
 def hello_world():
     return 'Hello, World!'
+
+@app.route('/customer', methods=['GET', 'POST'])
+def customer():
+    print(request)
+    if request.method == 'POST':
+        data = request.get_json()
+        print(data)
+        self.customer = data['name']
+        response = "Got Customer"
+        return jsonify({ "speech": response, "displayText": response})
+    elif request.method == 'GET':
+        return jsonify({ "name": "Daniel" })
 
 if __name__ == "__main__":
     context = (cer, key)
