@@ -39,16 +39,26 @@ class Transaction(db.Model):
             "currency": self.currency,
             "date": self.date.strftime('%d.%m.%Y')}
 
+
 def get_name(data):
     for context in data['result']['contexts']:
         if context['name'] == 'login':
             return context['parameters']['Name']
 
+
+@app.route('/money_penny', methods=['GET', 'POST'])
+def money_penny():
+    result = request.get_json()['result']
+    if result['action'] == 'get_balance':
+        name = get_name(data) if request.method == 'POST' else "Daniel"
+        return get_balance(name)
+    else:
+        return get_transaction()
+
+
 @app.route('/balance', methods=['GET', 'POST'])
-def balance():
-    data = request.get_json()
+def get_balance(name="Daniel"):
     balance = 0
-    name = get_name(data) if request.method == 'POST' else "Danel"
     for t in Transaction.query.all():
         if t.recipient == name:
             balance += t.amount
@@ -59,7 +69,7 @@ def balance():
 
 
 @app.route('/transaction', methods=['GET', 'POST'])
-def transaction():
+def get_transaction():
     if request.method == 'GET':
         transactions = Transaction.query.all()
         return jsonify([t.as_dict() for t in transactions])
