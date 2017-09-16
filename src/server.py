@@ -3,19 +3,13 @@
 
 from flask import (Flask, request, jsonify)
 from flask_sqlalchemy import SQLAlchemy
-from OpenSSL import SSL
 
 import datetime
 import os
 
-context = SSL.Context(SSL.SSLv23_METHOD)
-cer = os.path.join(os.path.dirname(__file__), 'moneypenny.crt')
-key = os.path.join(os.path.dirname(__file__), 'moneypenny.key')
-
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'
 db = SQLAlchemy(app)
-
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -47,5 +41,4 @@ def hello_world():
     return 'Hello, World!'
 
 if __name__ == "__main__":
-    context = (cer, key)
-    app.run(host='0.0.0.0', debug=True, ssl_context=context)
+    app.run(debug=True)
