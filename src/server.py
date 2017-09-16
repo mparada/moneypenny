@@ -73,7 +73,8 @@ def get_balance(name="Daniel"):
             balance += t.amount
         elif t.sender == name:
             balance -= t.amount
-    response = ("{}'s balance is {} Swiss Francs.".format(name, balance))
+    response = ("{}'s balance is {} USD.".format(name, balance))
+    socketio.emit('balance', response)
     return jsonify({"speech": response, "displayText": response})
 
 

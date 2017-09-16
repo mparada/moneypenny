@@ -29,6 +29,9 @@
             socket.on('transaction', function(msg) {
                 add_transaction(msg);
             });
+            socket.on('balance', function(msg) {
+                add_balance(msg);
+            });
         });
     </script>
 
