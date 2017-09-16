@@ -100,7 +100,7 @@ def get_transaction():
         recipient = params['recipient']
         sender = params['Name']
 
-        socketio.emit('transaction', 'Transferring ' + amount + ' ' + currency + ' to ' + recipient + '.')
+        socketio.emit('transaction', 'Transferring ' + str(amount) + ' ' + currency + ' to ' + recipient + '.')
 
         transaction = Transaction(sender, recipient, "Money Penny Transfer",
                                   amount, currency)
