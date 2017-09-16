@@ -3,13 +3,16 @@
 
 from flask import (Flask, request, jsonify)
 from flask_sqlalchemy import SQLAlchemy
-
+from flask_cors import CORS
 import datetime
 import os
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'
 db = SQLAlchemy(app)
+
+customer = "Daniel"
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -27,7 +30,6 @@ class Transaction(db.Model):
         self.amount = amount
         self.currency = currency
         self.date = datetime.datetime()
-        self.customer = None
 
 @app.route('/transaction', methods=['GET', 'POST'])
 def transaction():
@@ -47,11 +49,12 @@ def customer():
     if request.method == 'POST':
         data = request.get_json()
         print(data)
-        self.customer = data['name']
+        customer = data['name']
         response = "Got Customer"
-        return jsonify({ "speech": response, "displayText": response})
+        return jsonify({"speech": response, "displayText": response})
     elif request.method == 'GET':
-        return jsonify({ "name": "Daniel" })
+        result = jsonify({"name": customer})
+        return result
 
 if __name__ == "__main__":
     app.run(debug=True)
