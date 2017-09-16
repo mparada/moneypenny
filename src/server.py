@@ -4,15 +4,16 @@
 from flask import (Flask, request, jsonify)
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from flask_socketio import SocketIO, emit
 import datetime
 import os
+from threading import Event
 
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'
 db = SQLAlchemy(app)
-
-customer_name = "Nobody"
+socketio = SocketIO(app)
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -106,16 +107,19 @@ def get_login(request):
 
 @app.route('/customer', methods=['GET', 'POST'])
 def customer():
-    global customer_name
     if request.method == 'POST':
         login = get_login(request)
         customer_name = login['parameters']['Name']
+        socketio.emit('name', customer_name)
         response = "Got Customer"
         return jsonify({"speech": response, "displayText": response})
     elif request.method == 'GET':
         return jsonify({"name": customer_name})
         #return app.send_static_file('Persona_Daniel.html')
 
+@socketio.on('my event')
+def handle_my_custom_event(json):
+    print('received json: ' + str(json))
 
 if __name__ == "__main__":
     db.create_all()
@@ -123,4 +127,5 @@ if __name__ == "__main__":
         salary = Transaction("ETH Zurich", person, "Salary", 1000, "CHF")
         db.session.add(salary)
     db.session.commit()
-    app.run(debug=True)
+    socketio.run(app)
+    #app.run(debug=True)
