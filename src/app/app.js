@@ -17,8 +17,10 @@
 
 // [START app]
 const express = require('express');
+const crypto = require('crypto');
 
 const app = express();
+app.enable('trust proxy');
 
 // Imports the Google Cloud client library
 const Datastore = require('@google-cloud/datastore');
@@ -51,24 +53,26 @@ app.get('/transaction', (req, res) => {
   // amount	currency	date	recipient	reference	sender
 
 
-  const params = req.body.result.contexts.filter((obj) => obj.name == 'do_transaction-followup')[0].parameters;
+  // const login_params = req.body.result.contexts.filter((obj) => obj.name === 'login')[0].parameters;
+  const trans_params = req.body.result.contexts.filter((obj) => obj.name === 'do_transaction-followup')[0].parameters;
 
   const transaction = {
     key: transactionKey,
     data: {
-      amount: params.money.amount,
-      currency: params.money.currency,
+      amount: trans_params.money.amount,
+      currency: trans_params.money.currency,
       date: new Date().toJSON(),
-      recipient: params.recipient,
-      sender: "Alice",
-      reference: "Default",
+      recipient: trans_params.recipient,
+      // sender: login_params.Name,
+      reference: "Smart Voice Transaction",
     }
   };
 
   // Saves the entity
   datastore.save(transaction)
     .then(() => {
-      console.log(`Saved ${transaction.key}`);
+      // console.log(`Saved ${transaction.key}`);
+      console.log('Saved ' + transaction.key);
 
       const response = `${transaction.data.amount} ${transaction.data.currency} have been sent to ${transaction.data.recipient}.`;
 
