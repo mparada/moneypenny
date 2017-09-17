@@ -73,7 +73,7 @@ def get_balance(name="Daniel"):
             balance += t.amount
         elif t.sender == name:
             balance -= t.amount
-    response = ("Your balance is {} USD.".format(balance))
+    response = ("Your balance is {} USD".format(balance))
     socketio.emit('balance', response)
     return jsonify({"speech": response, "displayText": response})
 
@@ -101,7 +101,7 @@ def get_transaction():
         recipient = params['recipient']
         sender = params['Name']
 
-        socketio.emit('transaction', 'Transferring ' + str(amount) + ' ' + currency + ' to ' + recipient + '.')
+        socketio.emit('transaction', "Transferring {} {} to {}".format(amount, currency, recipient))
 
         transaction = Transaction(sender, recipient, "Money Penny Transfer",
                                   amount, currency)
