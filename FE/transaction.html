@@ -41,7 +41,9 @@
       <div class="row marketing">
         <div class="col-lg-12">
           <h4>Transaction</h4>
-          <p>Overview of your transactions.</p>
+          <p>Overview of all transactions.</p>
+
+          <table class="table"></table>
         </div>
       </div>
 
@@ -52,4 +54,48 @@
 
     </div> <!-- /container -->
   </body>
+  <script type="text/javascript">
+    let table = document.querySelector(".table");
+    let head = table.createTHead();
+    let head_row = head.insertRow();
+
+    const headers = ['#', 'Date', 'Sender', 'Recipient', 'Reference',
+      'Amount', 'Currency'];
+
+    const keys = ['id', 'date', 'sender', 'recipient', 'reference',
+      'amount', 'currency'];
+
+    for (let header of headers) {
+      let th = document.createElement("th");
+      th.appendChild(document.createTextNode(header));
+      head_row.appendChild(th);
+    }
+
+
+    fetch('/transaction').then((response) => {
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        return response.json();
+      }
+
+      throw new TypeError("Oops, we haven't got JSON!");
+    })
+    .then((json) => {
+
+      console.log('Got JSON:', json);
+
+    let tbody = table.createTBody();
+    let head_row = head.insertRow();
+      for (let row of json) {
+        let tbody_row = tbody.insertRow();
+
+        for (let key of keys) {
+          let td = document.createElement("td");
+          td.appendChild(document.createTextNode(row[key]));
+          tbody_row.appendChild(td);
+        }
+      }
+    })
+    .catch(function(error) { console.log(error); });
+  </script>
 </html>

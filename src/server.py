@@ -75,7 +75,7 @@ def get_balance(name="Daniel"):
             balance -= t.amount
     response = ("Your balance is {} USD".format(balance))
     socketio.emit('balance', response)
-    return jsonify({"speech": response, "displayText": response})
+    return jsonify({"speech": response, "displayText": response, "balance": balance})
 
 
 @app.route('/transaction', methods=['GET', 'POST'])

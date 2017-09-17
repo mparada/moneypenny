@@ -45,7 +45,14 @@
         <div class="col-lg-12">
           <h4>Overview</h4>
           <p>Here you see the overview of your monthly spending.</p>
+
+
+          <div id="balance_cont" style='visibility:hidden'>
+            <h5>Available Balance:</h5>
+            <span id="balance">400</span> USD
+          </div>
         </div>
+
       </div>
 
       <div id="chart">
@@ -89,6 +96,15 @@ var ctx = $("#myChart");
 new Chart(ctx, {
     data: data,
     type: 'polarArea'
+});
+
+fetch('/balance').then((response) => {
+  document.querySelector('#balance_cont').style.visibility = 'visible';
+  return response.json();
+}).then((json) => {
+  document.querySelector('#balance').textContent = json.balance;
+}).catch(() => {
+  document.querySelector('#balance').textContent = '400';
 });
     </script>
   </body>
