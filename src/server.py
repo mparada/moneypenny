@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from flask import (Flask, request, jsonify, send_from_directory)
+from flask import (Flask, request, jsonify, redirect, send_from_directory)
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
@@ -129,6 +129,10 @@ def customer(name="Daniel"):
     socketio.emit('name', name)
     response = "Got Customer"
     return jsonify({"speech": response, "displayText": response})
+
+@app.route('/')
+def root():
+    return redirect("FE/index.html", code=302)
 
 @socketio.on('my event')
 def handle_my_custom_event(json):
